@@ -4,7 +4,12 @@ const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY || '';
 
 // Initialize connection safely with fallback
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'YOUR_SUPABASE_URL');
+export const isSupabaseConfigured = !!(
+  supabaseUrl &&
+  supabaseAnonKey &&
+  (supabaseUrl.startsWith('https://') || supabaseUrl.startsWith('http://')) &&
+  !supabaseAnonKey.includes('YOUR_SUPABASE_ANON_KEY')
+);
 
 // Only instantiate if configured to avoid throwing initialization errors
 export const supabase = isSupabaseConfigured
